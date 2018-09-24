@@ -232,15 +232,15 @@ less_than_or_equal_to(X) ->
 
 -spec(contains_string(string()) -> hamcrest:matchspec()).
 contains_string([_|_]=X) ->
-    ?MATCHER(fun(Y) -> string:str(Y, X) > 0 end, X, {contains_string, X}).
+    ?MATCHER(fun(Y) -> string:is_empty(string:find(Y, X)) == false end, X, {contains_string, X}).
 
 -spec(starts_with(string()) -> hamcrest:matchspec()).
 starts_with(X) ->
-    ?MATCHER(fun(Y) -> string:str(Y, X) == 1 end, X, {starts_with, X}).
+    ?MATCHER(fun(Y) -> string:find(Y, X) == Y end, X, {starts_with, X}).
 
 -spec(ends_with(string()) -> hamcrest:matchspec()).
 ends_with(X) ->
-    ?MATCHER(fun(Y) -> string:equal(string:right(Y, length(X)), X) end,
+    ?MATCHER(fun(Y) -> string:equal(string:pad(Y, length(X), leading), X) end,
              X, {ends_with, X}).
 
 -spec(matches_regex(string()) -> hamcrest:matchspec()).
